@@ -18,24 +18,25 @@ AuthForm::~AuthForm()
 
 void AuthForm::on_OKpushButton_clicked()
 {
-    QString ipStr = ui->IPlineEdit->text();
-    QString loginStr = ui->LOGINlineEdit->text();
-    QString passStr = ui->PASSlineEdit->text();
+    m_connectionInfo.ip = ui->IPlineEdit->text();
+    m_connectionInfo.login = ui->LOGINlineEdit->text();
+    m_connectionInfo.pass = ui->PASSlineEdit->text();
 
-    ui->OKpushButton->setText("in progress");
+    ui->OKpushButton->setText("In progress");
 
     ui->listWidget->setEnabled(true);
 
-    ui->listWidget->addItem("ONVIF");
-    ui->listWidget->addItem("ONVIF");
-    ui->listWidget->addItem("ONVIF");
-    ui->listWidget->addItem("ONVIF");
-    ui->listWidget->addItem("ONVIF");
-    ui->listWidget->addItem("ONVIF");
-    ui->listWidget->addItem("ONVIF");
-    //ui->listWidget->item
-    //ui->listWidget->item(ui->listWidget->count()-1)->setForeground(Qt::blue);
-    //ui->listWidget->addItem(&item);
-    //ui->listWidget->addItem("ZALIMKHANCHIK");
-    m_auth.sendRequest(ipStr, loginStr, passStr);
+//    ui->listWidget->addItem("ONVIF");
+//    ui->listWidget->addItem("ONVIF");
+//    ui->listWidget->addItem("ONVIF");
+//    ui->listWidget->addItem("ONVIF");
+//    ui->listWidget->addItem("ONVIF");
+//    ui->listWidget->addItem("ONVIF");
+//    ui->listWidget->addItem("ONVIF");
+//    ui->listWidget->item
+//    ui->listWidget->item(ui->listWidget->count()-1)->setForeground(Qt::blue);
+//    ui->listWidget->addItem(&item);
+//    ui->listWidget->addItem("ZALIMKHANCHIK");
+    m_checker.makeRequest();
+    m_checker.sendRequest(m_connectionInfo);
 }

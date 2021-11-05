@@ -21,6 +21,7 @@ private slots:
 
 private:
     Ui::AuthForm *ui;
-    Oemchecker m_auth;
+    Oemchecker m_checker;
+    ConnectionInfo m_connectionInfo;
 };
 #endif // AUTHFORM_H
