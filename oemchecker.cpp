@@ -30,19 +30,23 @@ void Oemchecker::sendRequest(const ConnectionInfo& connectionInfo)
 void Oemchecker::makeRequest()
 {
     QString val;
+
     QFile file("requests.json");
     if (file.exists()) qDebug() << file.fileName();
     file.open(QIODevice::ReadOnly | QIODevice::Text);
+
     QByteArray rawData = file.readAll();
-    qDebug() << rawData;
+    //qDebug() << rawData;
     file.close();
 
     QJsonDocument doc = QJsonDocument::fromJson(rawData);
     QJsonObject json = doc.object();
-    QString str = json["hello"].toString();
-    qDebug() << str;
+    //QString str = json["CfgVersion"].toString();
+    qDebug() << json["CfgVersion"];
 //    bool t = json["t"].toBool();
+//    qDebug() << t;
 //    bool f = json["f"].toBool();
+//    qDebug() << f;
 //    bool n = json["n"].toBool();
 //    int  i = json["i"].toInt();
 //    double pi = json["pi"].toDouble();
