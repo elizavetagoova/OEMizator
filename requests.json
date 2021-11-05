@@ -1,14 +1,19 @@
 {
-	"hello": "world",
-	"t": true,
-	"f": false,
-	"n": null,
-	"i": 123,
-	"pi": 3.1416,
-	"a": [
-		1,
-		2,
-		3,
-		4
+	"CfgVersion": 1.0,
+	"All": [
+		{
+			"BrandName": "Dahua",
+			"Requests": {
+				"Path": "",
+				"Body": ""
+			}
+		},
+		{
+			"BrandName": "Hikvision",
+			"Requests": {
+				"Path": "",
+				"Body": ""
+			}
+		}
 	]
 }
