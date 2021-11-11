@@ -9,6 +9,12 @@ AuthForm::AuthForm(QWidget *parent)
 {
     ui->setupUi(this);
     ui->listWidget->setDisabled(true);
+
+    connect(&m_checker, &Oemchecker::recievedResponse, this, &AuthForm::onRecieveReply);
+
+    ui->IPlineEdit->setText("172.19.9.50");
+    ui->LOGINlineEdit->setText("root");
+    ui->PASSlineEdit->setText("root");
 }
 
 AuthForm::~AuthForm()
@@ -18,25 +24,25 @@ AuthForm::~AuthForm()
 
 void AuthForm::on_OKpushButton_clicked()
 {
-    m_connectionInfo.ip = ui->IPlineEdit->text();
-    m_connectionInfo.login = ui->LOGINlineEdit->text();
-    m_connectionInfo.pass = ui->PASSlineEdit->text();
-
-    ui->OKpushButton->setText("In progress");
-
     ui->listWidget->setEnabled(true);
 
-//    ui->listWidget->addItem("ONVIF");
-//    ui->listWidget->addItem("ONVIF");
-//    ui->listWidget->addItem("ONVIF");
-//    ui->listWidget->addItem("ONVIF");
-//    ui->listWidget->addItem("ONVIF");
-//    ui->listWidget->addItem("ONVIF");
-//    ui->listWidget->addItem("ONVIF");
-//    ui->listWidget->item
-//    ui->listWidget->item(ui->listWidget->count()-1)->setForeground(Qt::blue);
-//    ui->listWidget->addItem(&item);
-//    ui->listWidget->addItem("ZALIMKHANCHIK");
-    m_checker.makeRequest();
-    m_checker.sendRequest(m_connectionInfo);
+    QString ip = ui->IPlineEdit->text();
+    QString login = ui->LOGINlineEdit->text();
+    QString pass = ui->PASSlineEdit->text();
+
+    m_checker.setConnectionInfo(ip, login, pass);
+    m_checker.startCheck();
+}
+
+void AuthForm::onRecieveReply(QString str, int errorCode)
+{
+    ui->listWidget->addItem(str);
+    if (errorCode == 200)
+    {
+        ui->listWidget->item(ui->listWidget->count()-1)->setForeground(Qt::green);
+    }
+    else
+    {
+        ui->listWidget->item(ui->listWidget->count()-1)->setForeground(Qt::red);
+    }
 }

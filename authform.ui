@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>319</width>
-    <height>453</height>
+    <height>369</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <x>30</x>
       <y>20</y>
       <width>261</width>
-      <height>371</height>
+      <height>291</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -64,9 +64,6 @@
         <string>Чей OEM?</string>
        </property>
       </widget>
-     </item>
-     <item>
-      <widget class="QListView" name="listView"/>
      </item>
      <item>
       <widget class="QListWidget" name="listWidget">
