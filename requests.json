@@ -4,14 +4,35 @@
 		{
 			"BrandName": "Dahua",
 			"Requests": {
-				"Path": "",
+				"Path": "/cgi-bin/magicBox.cgi?action=getDeviceType",
 				"Body": ""
 			}
 		},
 		{
 			"BrandName": "Hikvision",
 			"Requests": {
-				"Path": "",
+				"Path": "/ISAPI/System/deviceInfo",
+				"Body": ""
+			}
+		},
+		{
+			"BrandName": "Axis",
+			"Requests": {
+				"Path": "/axis-cgi/view/param.cgi?action=list&group=Brand.ProdNbr,Properties.Firmware.Version,Network.eth0.MACAddress",
+				"Body": ""
+			}
+		},
+		{
+			"BrandName": "Panasonic",
+			"Requests": {
+				"Path": "/cgi-bin/getinfo?FILE=1",
+				"Body": ""
+			}
+		},
+		{
+			"BrandName": "Hanwha",
+			"Requests": {
+				"Path": "/stw-cgi/system.cgi?msubmenu=deviceinfo&action=view",
 				"Body": ""
 			}
 		}

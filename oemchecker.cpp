@@ -3,53 +3,83 @@
 #include <QJsonObject>
 #include <QJsonDocument>
 #include <QJsonArray>
-//#include <QMessageBox>
+#include <QJsonParseError>
 
 Oemchecker::Oemchecker()
+    : m_index(0)
 {
-    m_networkAccessManager = new QNetworkAccessManager();
-    connect(m_networkAccessManager, &QNetworkAccessManager::finished, this, &Oemchecker::onFinished);
+    connect(&m_networkAccessManager, &QNetworkAccessManager::finished, this, &Oemchecker::onFinished);
+}
+
+void Oemchecker::setConnectionInfo(const ConnectionInfo& connInfo)
+{
+    m_connectionInfo.ip = connInfo.ip;
+    m_connectionInfo.login = connInfo.login;
+    m_connectionInfo.pass = connInfo.pass;
+}
+
+void Oemchecker::startCheck()
+{
+    QFile file("requests.json");
+    if (!file.exists())
+    {
+        emit errorOcured("config file is missing");
+        return;
+    }
+
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+
+    if (!file.isOpen())
+    {
+        emit errorOcured(file.fileName() + " is not open!");
+        return;
+    }
+
+    QByteArray rawData = file.readAll();
+    file.close();
+
+    QJsonParseError errorParsing;
+    QJsonDocument doc = QJsonDocument::fromJson(rawData, &errorParsing);
+    if (errorParsing.error != 0)
+    {
+        emit errorOcured(errorParsing.errorString());
+        return;
+    }
+
+    QJsonObject json = doc.object();
+    m_requests = json["All"].toArray();
+
+    sendRequest();
 }
 
 void Oemchecker::onFinished(QNetworkReply *reply)
 {
-//    QString str = reply->readAll();
-//    QMessageBox msgBox;
-//    msgBox.setText(str);
-//    msgBox.exec();
-//    qDebug() << str;
+    int errorCode = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute).toInt();    
+    emit recieveResponse(m_currentBrand, errorCode);
+
+    if(m_index < m_requests.size())
+    {
+        sendRequest();
+    }
+    else
+    {
+        emit checkIsFinished();
+        m_index = 0;
+    }
 }
-void Oemchecker::sendRequest(const ConnectionInfo& connectionInfo)
+
+void Oemchecker::sendRequest()
 {
-    QUrl url("http://" + connectionInfo.ip + "/cgi-bin/magicBox.cgi?action=getDeviceType");
-    url.setUserName(connectionInfo.login);
-    url.setPassword(connectionInfo.pass);
-    m_networkAccessManager->get(QNetworkRequest(url));
+    QJsonObject brandItem = m_requests[m_index++].toObject();
+    QJsonObject request = brandItem["Requests"].toObject();
+    QString path = request["Path"].toString();
+    m_currentBrand = brandItem["BrandName"].toString();
+
+    QUrl url("http://" + m_connectionInfo.ip + path);
+    url.setUserName(m_connectionInfo.login);
+    url.setPassword(m_connectionInfo.pass);
+
+    m_networkAccessManager.get(QNetworkRequest(url));
 }
 
-void Oemchecker::makeRequest()
-{
-    QString val;
 
-    QFile file("requests.json");
-    if (file.exists()) qDebug() << file.fileName();
-    file.open(QIODevice::ReadOnly | QIODevice::Text);
-
-    QByteArray rawData = file.readAll();
-    //qDebug() << rawData;
-    file.close();
-
-    QJsonDocument doc = QJsonDocument::fromJson(rawData);
-    QJsonObject json = doc.object();
-    //QString str = json["CfgVersion"].toString();
-    qDebug() << json["CfgVersion"];
-//    bool t = json["t"].toBool();
-//    qDebug() << t;
-//    bool f = json["f"].toBool();
-//    qDebug() << f;
-//    bool n = json["n"].toBool();
-//    int  i = json["i"].toInt();
-//    double pi = json["pi"].toDouble();
-//    QJsonArray ar = json["a"].toArray();
-//    QList <QVariant> at = ar.toVariantList();
-}

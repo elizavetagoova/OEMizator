@@ -13,18 +13,27 @@ struct ConnectionInfo {
 class Oemchecker : public QObject
 {
     Q_OBJECT
+
 public:
     Oemchecker();
-    ConnectionInfo m_connectionInfo;
-    void sendRequest(const ConnectionInfo& m_connectionInfo);
-    void makeRequest();
+    void setConnectionInfo(const ConnectionInfo& connInfo);
+    void startCheck();
+    void sendRequest();
 
 public slots:
-    void onFinished(QNetworkReply *reply);
+    void onFinished(QNetworkReply *reply);    
 
 private:
+    QNetworkAccessManager m_networkAccessManager;
+    ConnectionInfo m_connectionInfo;
+    QString m_currentBrand;
+    QJsonArray m_requests;
+    int m_index;
 
-    QNetworkAccessManager *m_networkAccessManager;
+signals:
+    void recieveResponse(QString str, int errorCode);
+    void checkIsFinished();
+    void errorOcured(QString error);
 };
 
 #endif // OEMCHECKER_H

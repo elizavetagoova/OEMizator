@@ -16,12 +16,18 @@ public:
     AuthForm(QWidget *parent = nullptr);
     ~AuthForm();
 
+public slots:
+    void onRecieveReply(QString str, int errorCode);
+    void onCheckIsFinished();
+    void onErrorOcured(QString error);
+
 private slots:
     void on_OKpushButton_clicked();
+
+    void on_CLEARButton_clicked();
 
 private:
     Ui::AuthForm *ui;
     Oemchecker m_checker;
-    ConnectionInfo m_connectionInfo;
 };
 #endif // AUTHFORM_H
