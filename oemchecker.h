@@ -16,7 +16,7 @@ class Oemchecker : public QObject
 
 public:
     Oemchecker();
-    void setConnectionInfo(QString ip, QString login, QString pass);
+    void setConnectionInfo(const ConnectionInfo& connInfo);
     void startCheck();
     void sendRequest();
 
@@ -24,14 +24,16 @@ public slots:
     void onFinished(QNetworkReply *reply);    
 
 private:
-    QNetworkAccessManager *m_networkAccessManager;
+    QNetworkAccessManager m_networkAccessManager;
     ConnectionInfo m_connectionInfo;
     QString m_currentBrand;
     QJsonArray m_requests;
     int m_index;
 
 signals:
-    void recievedResponse(QString str, int errorCode);
+    void recieveResponse(QString str, int errorCode);
+    void checkIsFinished();
+    void errorOcured(QString error);
 };
 
 #endif // OEMCHECKER_H

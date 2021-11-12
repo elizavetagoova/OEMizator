@@ -20,7 +20,7 @@
       <x>30</x>
       <y>20</y>
       <width>261</width>
-      <height>291</height>
+      <height>301</height>
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
@@ -61,7 +61,7 @@
      <item>
       <widget class="QPushButton" name="OKpushButton">
        <property name="text">
-        <string>Чей OEM?</string>
+        <string>CHECK</string>
        </property>
       </widget>
      </item>
@@ -69,6 +69,13 @@
       <widget class="QListWidget" name="listWidget">
        <property name="enabled">
         <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="CLEARButton">
+       <property name="text">
+        <string>CLEAR</string>
        </property>
       </widget>
      </item>

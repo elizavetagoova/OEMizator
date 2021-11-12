@@ -18,9 +18,13 @@ public:
 
 public slots:
     void onRecieveReply(QString str, int errorCode);
+    void onCheckIsFinished();
+    void onErrorOcured(QString error);
 
 private slots:
     void on_OKpushButton_clicked();
+
+    void on_CLEARButton_clicked();
 
 private:
     Ui::AuthForm *ui;
